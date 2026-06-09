@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Access Policies — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="page-admin">
+<header class="topbar">
+  <a href="admin.html" class="topbar-back">&larr; Dashboard</a>
+  <span class="topbar-title">Access Policies</span>
+</header>
+<main class="admin-layout">
+  <section class="tab-panel">
+    <div class="panel-header">
+      <h2>Access Control Policies</h2>
+      <div class="panel-actions">
+        <button class="btn btn-primary btn-sm" id="newPolicyBtn">+ New Policy</button>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead><tr>
+          <th>ID</th><th>Policy Name</th><th>Applies To</th><th>Target</th>
+          <th>Resource</th><th>Effect</th><th>Time Window</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="policiesBody">
+          <tr><td colspan="8" class="table-loading"><span class="spinner-sm"></span> Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- Policy Modal -->
+<div class="modal-backdrop" id="policyModal" style="display:none;" aria-hidden="true">
+  <div class="modal" style="max-width:480px;text-align:left">
+    <h3 class="modal-title" id="policyModalTitle">New Policy</h3>
+    <div class="form-group">
+      <label>Policy Name</label>
+      <input type="text" id="policyName" class="form-input" placeholder="e.g. Staff Only After Hours"/>
+    </div>
+    <div class="form-group">
+      <label>Applies To</label>
+      <select id="policyTargetType" class="form-input">
+        <option value="Role">Role</option>
+        <option value="Department">Department</option>
+        <option value="User">User (by email)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Target Value</label>
+      <input type="text" id="policyTargetValue" class="form-input" placeholder="e.g. Student / Computer Science / user@email.com"/>
+    </div>
+    <div class="form-group">
+      <label>Resource / Facility</label>
+      <input type="text" id="policyResource" class="form-input" value="Main Entrance"/>
+    </div>
+    <div class="form-group">
+      <label>Effect</label>
+      <select id="policyIsAllowed" class="form-input">
+        <option value="1">Allow Access</option>
+        <option value="0">Deny Access</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:12px">
+      <div class="form-group" style="flex:1">
+        <label>Start Time (optional)</label>
+        <input type="time" id="policyStartTime" class="form-input"/>
+      </div>
+      <div class="form-group" style="flex:1">
+        <label>End Time (optional)</label>
+        <input type="time" id="policyEndTime" class="form-input"/>
+      </div>
+    </div>
+    <div class="modal-actions" style="margin-top:8px">
+      <button class="btn btn-ghost" id="policyCancel">Cancel</button>
+      <button class="btn btn-primary" id="policySave">Save Policy</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm -->
+<div class="modal-backdrop" id="delModal" style="display:none;">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <h3 class="modal-title">Delete Policy</h3>
+    <p class="modal-body" id="delModalBody"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="delCancel">Cancel</button>
+      <button class="btn btn-danger" id="delConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="js/policies.js"></script>
+</body>
+</html>

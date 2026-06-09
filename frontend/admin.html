@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="page-admin">
+<header class="topbar">
+  <a href="index.html" class="topbar-back">&larr; Home</a>
+  <span class="topbar-title">Admin Dashboard</span>
+  <div class="topbar-right">
+    <span class="live-dot" id="liveDot" title="Live updates active"></span>
+    <span class="topbar-role">Administrator</span>
+  </div>
+</header>
+
+<!-- Quick-nav bar -->
+<nav class="admin-nav">
+  <a href="admin.html"     class="admin-nav-link admin-nav-link--active">📊 Overview</a>
+  <a href="attendance.html"class="admin-nav-link">🕐 Attendance</a>
+  <a href="analytics.html" class="admin-nav-link">📈 Analytics</a>
+  <a href="policies.html"  class="admin-nav-link">🔒 Policies</a>
+  <a href="enroll.html"    class="admin-nav-link">➕ Enrol User</a>
+</nav>
+
+<main class="admin-layout">
+
+  <!-- Stats Row -->
+  <section class="stats-row" style="grid-template-columns:repeat(6,1fr)">
+    <div class="stat-card"><div class="stat-value" id="statUsers">—</div><div class="stat-label">Registered Users</div></div>
+    <div class="stat-card"><div class="stat-value" id="statAttempts">—</div><div class="stat-label">Total Attempts</div></div>
+    <div class="stat-card stat-card--granted"><div class="stat-value" id="statGranted">—</div><div class="stat-label">Access Granted</div></div>
+    <div class="stat-card stat-card--denied"><div class="stat-value" id="statDenied">—</div><div class="stat-label">Access Denied</div></div>
+    <div class="stat-card stat-card--rate"><div class="stat-value" id="statRate">—</div><div class="stat-label">Success Rate</div></div>
+    <div class="stat-card"><div class="stat-value" id="statTodayAtt">—</div><div class="stat-label">Today's Attendance</div></div>
+  </section>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn tab-btn--active" data-tab="users">
+      Registered Users <span class="tab-count" id="tabCountUsers"></span>
+    </button>
+    <button class="tab-btn" data-tab="logs">
+      Access Logs <span class="tab-count" id="tabCountLogs"></span>
+    </button>
+  </div>
+
+  <!-- Users Tab -->
+  <section class="tab-panel" id="tab-users">
+    <div class="panel-header">
+      <h2>Registered Users</h2>
+      <div class="panel-actions">
+        <div class="search-box">
+          <input type="text" id="userSearch" class="search-input" placeholder="Search by name, email, role, status…" autocomplete="off"/>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="location.href='enroll.html'">+ Enrol New User</button>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table" id="usersTable">
+        <thead><tr>
+          <th>ID</th><th>Name</th><th>Email</th><th>Role</th>
+          <th>Department</th><th>Status</th><th>Registered</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="usersBody">
+          <tr><td colspan="8" class="table-loading"><span class="spinner-sm"></span> Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Logs Tab -->
+  <section class="tab-panel" id="tab-logs" style="display:none;">
+    <div class="panel-header">
+      <h2>Access Logs</h2>
+      <div class="panel-actions">
+        <div class="search-box">
+          <input type="text" id="logSearch" class="search-input" placeholder="Search by name, reason or IP…" autocomplete="off"/>
+        </div>
+        <div class="log-filters">
+          <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="Granted">Granted</button>
+          <button class="filter-btn" data-filter="Denied">Denied</button>
+        </div>
+        <a href="/api/admin/export/logs" download class="btn btn-sm btn-ghost">⬇ CSV</a>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table" id="logsTable">
+        <thead><tr>
+          <th>Log ID</th><th>User</th><th>Timestamp</th><th>Outcome</th><th>Reason</th><th>IP Address</th>
+        </tr></thead>
+        <tbody id="logsBody">
+          <tr><td colspan="6" class="table-loading"><span class="spinner-sm"></span> Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- Delete Modal -->
+<div class="modal-backdrop" id="modalBackdrop" style="display:none;" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-icon">⚠️</div>
+    <h3 class="modal-title" id="modalTitle">Delete User</h3>
+    <p class="modal-body" id="modalBody"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+      <button class="btn btn-danger" id="modalConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="js/admin.js"></script>
+</body>
+</html>

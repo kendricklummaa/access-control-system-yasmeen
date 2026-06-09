@@ -1,0 +1,19 @@
+{
+  "name": "access-control",
+  "version": "1.0.0",
+  "description": "Web-Based Facial Recognition and Liveness Detection Access Control System",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js"
+  },
+  "keywords": ["facial-recognition", "liveness-detection", "access-control", "biometric"],
+  "author": "Lantana Ibrahim",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "sql.js": "^1.12.0"
+  }
+}

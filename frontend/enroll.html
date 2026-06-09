@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enrol User — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-enroll">
+
+  <header class="topbar">
+    <a href="index.html" class="topbar-back">&larr; Home</a>
+    <span class="topbar-title">User Enrolment</span>
+    <span></span>
+  </header>
+
+  <main class="enroll-layout">
+
+    <!-- Camera Panel -->
+    <section class="camera-panel">
+      <div class="camera-frame" id="cameraFrame">
+        <video id="video" autoplay muted playsinline></video>
+        <canvas id="overlay"></canvas>
+        <div class="camera-status" id="cameraStatus">Starting camera...</div>
+      </div>
+      <div class="camera-controls">
+        <button class="btn btn-primary" id="captureBtn" disabled>
+          Capture Face
+        </button>
+        <p class="camera-hint" id="cameraHint">
+          Position your face inside the frame, then click Capture.
+        </p>
+      </div>
+    </section>
+
+    <!-- Form Panel -->
+    <section class="form-panel">
+      <h2>Registration Details</h2>
+
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="e.g. Lantana Ibrahim" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="e.g. l.ibrahim@fedpolynas.edu.ng" />
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role">
+          <option value="">-- Select Role --</option>
+          <option value="Student">Student</option>
+          <option value="Staff">Staff</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" id="department" value="Computer Science" />
+      </div>
+
+      <div class="capture-preview" id="capturePreview" style="display:none;">
+        <p class="capture-label">Captured Face</p>
+        <canvas id="previewCanvas"></canvas>
+        <button class="btn btn-ghost" id="retakeBtn">Retake</button>
+      </div>
+
+      <button class="btn btn-success btn-block" id="enrollBtn" disabled>
+        Enrol User
+      </button>
+
+      <div class="dup-warning" id="dupWarning" style="display:none;"></div>
+    <div class="result-box" id="resultBox" style="display:none;"></div>
+    </section>
+
+  </main>
+
+  <!-- face-api.js — local copy, no internet needed -->
+  <script src="assets/face-api/face-api.min.js"></script>
+  <script src="js/enroll.js"></script>
+
+</body>
+</html>

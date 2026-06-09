@@ -1,0 +1,9 @@
+node_modules/
+database/*.db
+database/*.db-shm
+database/*.db-wal
+*.log
+.env
+__pycache__/
+*.pyc
+.DS_Store

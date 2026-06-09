@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="page-admin">
+<header class="topbar">
+  <a href="admin.html" class="topbar-back">&larr; Dashboard</a>
+  <span class="topbar-title">User Profile</span>
+</header>
+<main class="admin-layout">
+  <div id="profileContent" style="display:none">
+    <section class="profile-card">
+      <div class="profile-photo-wrap">
+        <img id="profilePhoto" class="profile-photo" src="" alt="Enrolment photo"/>
+        <div class="profile-photo-placeholder" id="profilePhotoPlaceholder">👤</div>
+      </div>
+      <div class="profile-info">
+        <h2 id="profileName"></h2>
+        <div class="profile-meta">
+          <span id="profileRole" class="badge"></span>
+          <span id="profileStatus" class="badge"></span>
+        </div>
+        <p class="muted-cell" id="profileDept"></p>
+        <p class="muted-cell" id="profileEmail"></p>
+        <p class="muted-cell" id="profileRegistered"></p>
+      </div>
+      <div class="profile-actions">
+        <select id="statusSelect" class="form-input" style="width:160px">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Suspended">Suspended</option>
+        </select>
+        <button class="btn btn-primary btn-sm" id="updateStatusBtn">Update Status</button>
+      </div>
+    </section>
+
+    <section class="stats-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card"><div class="stat-value" id="pTotal">—</div><div class="stat-label">Total Attempts</div></div>
+      <div class="stat-card stat-card--granted"><div class="stat-value" id="pGranted">—</div><div class="stat-label">Granted</div></div>
+      <div class="stat-card stat-card--denied"><div class="stat-value" id="pDenied">—</div><div class="stat-label">Denied</div></div>
+      <div class="stat-card"><div class="stat-value" id="pAttendance">—</div><div class="stat-label">Attendance Days</div></div>
+    </section>
+
+    <section class="tab-panel">
+      <div class="panel-header"><h2>Recent Access History</h2></div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>Log ID</th><th>Timestamp</th><th>Outcome</th><th>Reason</th><th>IP</th></tr></thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div id="profileLoading" class="table-empty" style="padding:80px 0;text-align:center">
+    <span class="spinner-sm"></span> Loading profile…
+  </div>
+</main>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="js/profile.js"></script>
+</body>
+</html>

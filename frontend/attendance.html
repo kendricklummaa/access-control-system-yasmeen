@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="page-admin">
+<header class="topbar">
+  <a href="admin.html" class="topbar-back">&larr; Dashboard</a>
+  <span class="topbar-title">Attendance Records</span>
+  <div class="topbar-right">
+    <button class="btn btn-sm btn-ghost" id="exportCsvBtn">⬇ Export CSV</button>
+  </div>
+</header>
+<main class="admin-layout">
+  <section class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="stat-value" id="statTotal">—</div><div class="stat-label">Total Records</div></div>
+    <div class="stat-card stat-card--granted"><div class="stat-value" id="statToday">—</div><div class="stat-label">Today</div></div>
+    <div class="stat-card"><div class="stat-value" id="statDepts">—</div><div class="stat-label">Departments</div></div>
+  </section>
+
+  <div class="tab-bar" style="margin-bottom:0">
+    <span class="tab-btn tab-btn--active" style="cursor:default">Attendance Log</span>
+  </div>
+
+  <section class="tab-panel" id="tab-att">
+    <div class="panel-header">
+      <h2>Attendance</h2>
+      <div class="panel-actions">
+        <input type="date" id="filterDate" class="search-input" style="width:150px"/>
+        <select id="filterRole" class="search-input" style="width:120px">
+          <option value="">All Roles</option>
+          <option value="Student">Student</option>
+          <option value="Staff">Staff</option>
+        </select>
+        <input type="text" id="filterDept" class="search-input" placeholder="Department…" style="width:160px"/>
+        <button class="btn btn-primary btn-sm" id="applyFilter">Filter</button>
+        <button class="btn btn-ghost btn-sm" id="clearFilter">Clear</button>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead><tr>
+          <th>#</th><th>Name</th><th>Role</th><th>Department</th><th>Date</th><th>Check-in Time</th>
+        </tr></thead>
+        <tbody id="attBody">
+          <tr><td colspan="6" class="table-loading"><span class="spinner-sm"></span> Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="js/attendance.js"></script>
+</body>
+</html>

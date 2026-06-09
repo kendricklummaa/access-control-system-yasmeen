@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="page-admin">
+<header class="topbar">
+  <a href="admin.html" class="topbar-back">&larr; Dashboard</a>
+  <span class="topbar-title">Analytics & Reports</span>
+  <div class="topbar-right">
+    <select id="dayRange" class="search-input" style="width:140px">
+      <option value="7">Last 7 days</option>
+      <option value="14" selected>Last 14 days</option>
+      <option value="30">Last 30 days</option>
+    </select>
+  </div>
+</header>
+<main class="admin-layout">
+  <section class="stats-row" style="grid-template-columns:repeat(4,1fr)" id="summaryStats">
+    <div class="stat-card"><div class="stat-value" id="sTotal">—</div><div class="stat-label">Total Attempts</div></div>
+    <div class="stat-card stat-card--granted"><div class="stat-value" id="sGranted">—</div><div class="stat-label">Granted</div></div>
+    <div class="stat-card stat-card--denied"><div class="stat-value" id="sDenied">—</div><div class="stat-label">Denied</div></div>
+    <div class="stat-card"><div class="stat-value" id="sRate">—</div><div class="stat-label">Success Rate</div></div>
+  </section>
+
+  <div class="analytics-grid">
+    <div class="chart-card chart-card--wide">
+      <h3>Authentication Trend</h3>
+      <canvas id="trendChart" height="80"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>User Role Distribution</h3>
+      <canvas id="roleChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Attendance (Last 7 Days)</h3>
+      <canvas id="attChart"></canvas>
+    </div>
+    <div class="chart-card chart-card--wide">
+      <h3>Hourly Authentication Pattern</h3>
+      <canvas id="hourlyChart" height="80"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Top Departments</h3>
+      <canvas id="deptChart"></canvas>
+    </div>
+  </div>
+
+  <section class="tab-panel" style="margin-top:0">
+    <div class="panel-header">
+      <h2>Export Reports</h2>
+      <div class="panel-actions">
+        <button class="btn btn-primary btn-sm" id="exportLogsBtn">⬇ Export Logs CSV</button>
+        <button class="btn btn-primary btn-sm" id="exportAttBtn">⬇ Export Attendance CSV</button>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="js/analytics.js"></script>
+</body>
+</html>

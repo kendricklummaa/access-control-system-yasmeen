@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authenticate — Access Control System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-auth">
+
+  <header class="topbar">
+    <a href="index.html" class="topbar-back">&larr; Home</a>
+    <span class="topbar-title">Authentication</span>
+    <span></span>
+  </header>
+
+  <main class="auth-layout">
+
+    <!-- Camera Panel -->
+    <section class="camera-panel camera-panel--auth">
+      <div class="camera-frame" id="cameraFrame">
+        <video id="video" autoplay muted playsinline></video>
+        <canvas id="overlay"></canvas>
+        <div class="camera-status" id="cameraStatus">Starting camera...</div>
+      </div>
+
+      <!-- Challenge instruction banner — shown during liveness stage -->
+      <div class="liveness-banner" id="livenessBanner" style="display:none;">
+        <span class="liveness-banner-icon" id="challengeIcon">👁</span>
+        <span id="challengeText">Follow the on-screen instructions</span>
+      </div>
+
+      <!-- Step indicators -->
+      <div class="auth-steps">
+        <div class="auth-step" id="step1">
+          <span class="step-icon">🎯</span>
+          <span class="step-label">Liveness</span>
+          <span class="step-status" id="step1Status">Waiting</span>
+        </div>
+        <div class="auth-step" id="step2">
+          <span class="step-icon">🔍</span>
+          <span class="step-label">Face Recognition</span>
+          <span class="step-status" id="step2Status">Waiting</span>
+        </div>
+        <div class="auth-step" id="step3">
+          <span class="step-icon">🔐</span>
+          <span class="step-label">Access Decision</span>
+          <span class="step-status" id="step3Status">Waiting</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result Panel -->
+    <section class="result-panel" id="resultPanel">
+      <div class="result-idle" id="resultIdle">
+        <div class="result-icon">📷</div>
+        <h2>Ready</h2>
+        <p>Click Start, then follow the on-screen liveness challenge (head turn + blink).</p>
+        <button class="btn btn-primary btn-large" id="startAuthBtn" disabled>
+          Start Authentication
+        </button>
+      </div>
+
+      <div class="result-processing" id="resultProcessing" style="display:none;">
+        <div class="spinner"></div>
+        <h2>Processing...</h2>
+        <p id="processingMessage">Checking liveness...</p>
+      </div>
+
+      <div class="result-granted" id="resultGranted" style="display:none;">
+        <div class="result-icon">✅</div>
+        <h2>Access Granted</h2>
+        <p id="grantedName" class="result-name"></p>
+        <p id="grantedRole" class="result-role"></p>
+        <button class="btn btn-ghost" id="authAgainBtn">Authenticate Again</button>
+      </div>
+
+      <div class="result-denied" id="resultDenied" style="display:none;">
+        <div class="result-icon">❌</div>
+        <h2>Access Denied</h2>
+        <p id="deniedReason" class="result-reason"></p>
+        <button class="btn btn-ghost" id="tryAgainBtn">Try Again</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!--
+    MediaPipe Face Mesh via CDN — replaces face-api.js for liveness detection.
+    face-api.js is still used for face recognition (128-dim descriptor matching).
+    MediaPipe gives us 468 landmarks, stable yaw estimation, and eye openness scores.
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="assets/face-api/face-api.min.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>

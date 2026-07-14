@@ -28,6 +28,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 a { color: var(--teal); text-decoration: none; }
@@ -98,8 +99,9 @@ a:hover { text-decoration: underline; }
 
 .camera-frame {
   position: relative;
-  width: 420px;
-  height: 315px;
+  width: min(420px, 100%);
+  aspect-ratio: 4 / 3;
+  height: auto;
   background: #0f172a;
   border-radius: 12px;
   overflow: hidden;
@@ -225,6 +227,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 420px;
 }
 .result-idle, .result-processing,
 .result-granted, .result-denied {
@@ -302,6 +305,7 @@ a:hover { text-decoration: underline; }
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid var(--border);
+  gap: 14px;
 }
 .panel-header h2 { font-size: 16px; color: var(--navy); }
 
@@ -620,14 +624,147 @@ a:hover { text-decoration: underline; }
 
 /* ── Responsive adjustments ─────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .search-input { width: 160px; }
-  .search-input:focus { width: 180px; }
-  .panel-actions { gap: 8px; }
+  .topbar {
+    height: auto;
+    min-height: 56px;
+    padding: 10px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .topbar-title {
+    flex: 1 1 100%;
+    text-align: center;
+    order: 3;
+  }
+  .home-card {
+    padding: 36px 24px;
+  }
+  .home-logo {
+    font-size: 44px;
+  }
+  .enroll-layout,
+  .auth-layout,
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  .camera-panel--auth,
+  .form-panel,
+  .result-panel {
+    padding: 20px;
+  }
+  .camera-frame,
+  .camera-panel--auth .camera-frame {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+  .auth-steps {
+    flex-direction: column;
+  }
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tab-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+  .panel-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .panel-actions {
+    width: 100%;
+  }
+  .search-box,
+  .search-input {
+    width: 100%;
+  }
+  .search-input:focus {
+    width: 100%;
+  }
+  .panel-actions {
+    gap: 8px;
+  }
+  .log-filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .home-actions .btn,
+  .modal-actions .btn,
+  .panel-actions .btn,
+  .profile-actions .btn,
+  .result-panel .btn {
+    width: 100%;
+  }
+  .modal {
+    padding: 28px 20px 24px;
+  }
+  .modal-actions {
+    flex-direction: column;
+  }
+  .modal-actions .btn {
+    min-width: 0;
+  }
+  .profile-card {
+    padding: 20px;
+  }
+  .profile-actions {
+    align-items: stretch;
+    width: 100%;
+  }
+  .profile-actions .btn {
+    width: 100%;
+  }
 }
 @media (max-width: 520px) {
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .reason-cell { max-width: 140px; }
+  .home-container {
+    padding: 20px 12px;
+  }
+  .home-card {
+    padding: 28px 18px;
+  }
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+  .stat-value {
+    font-size: 30px;
+  }
+  .reason-cell {
+    max-width: 140px;
+  }
+  .camera-frame {
+    border-width: 2px;
+  }
+  .auth-step {
+    padding: 12px 10px;
+  }
+  .table-wrapper {
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+  .data-table {
+    font-size: 12px;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 10px 12px;
+  }
+  .toast {
+    width: calc(100% - 24px);
+    white-space: normal;
+    text-align: center;
+  }
+  .topbar-back,
+  .topbar-role {
+    font-size: 12px;
+  }
+  .topbar-title {
+    font-size: 15px;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -798,5 +935,14 @@ a:hover { text-decoration: underline; }
   .profile-card { flex-direction: column; }
   .profile-actions { align-items: flex-start; }
   .stats-row { grid-template-columns: repeat(2, 1fr) !important; }
-  .admin-nav { padding: 8px 12px; }
+  .admin-nav {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+  .admin-nav-link {
+    padding: 8px 12px;
+  }
+  .tab-btn {
+    padding: 10px 16px;
+  }
 }

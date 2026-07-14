@@ -2,7 +2,7 @@ FROM node:20-bookworm-slim
 
 ENV NODE_ENV=production
 ENV PYTHONUNBUFFERED=1
-ENV PYTHON_CMD=python3
+ENV PYTHON_CMD=/usr/bin/python3
 
 WORKDIR /app
 

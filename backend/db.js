@@ -19,7 +19,7 @@ function pickPythonCommand() {
     return [process.env.PYTHON];
   }
 
-  return ["python3", "python"];
+  return ["/usr/bin/python3", "python3", "python"];
 }
 
 function runDB(action, payload = {}) {

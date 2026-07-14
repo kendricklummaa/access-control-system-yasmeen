@@ -8,41 +8,64 @@ const DB_SCRIPT = path.join(__dirname, "python", "db_manager.py");
 
 function pickPythonCommand() {
   if (process.env.PYTHON_CMD) {
-    return process.env.PYTHON_CMD;
+    return [process.env.PYTHON_CMD];
   }
 
   if (process.platform === "win32") {
-    return "py";
+    return ["py", "python", "python3"];
   }
 
-  return process.env.PYTHON || "python3";
+  if (process.env.PYTHON) {
+    return [process.env.PYTHON];
+  }
+
+  return ["python3", "python"];
 }
 
 function runDB(action, payload = {}) {
   return new Promise((resolve, reject) => {
     const command = JSON.stringify({ action, ...payload });
-    const pythonCmd = pickPythonCommand();
-    const proc = spawn(pythonCmd, [DB_SCRIPT]);
-    let stdout = "", stderr = "";
-    proc.stdout.on("data", (c) => (stdout += c));
-    proc.stderr.on("data", (c) => (stderr += c));
-    proc.on("close", () => {
-      if (stderr) console.error(`[DB] Python stderr: ${stderr.trim()}`);
-      try { resolve(JSON.parse(stdout)); }
-      catch { reject(new Error(`DB parse error. stdout:"${stdout}" stderr:"${stderr}"`)); }
-    });
-    proc.on("error", (err) => {
-      if (err.code === "ENOENT" && !process.env.PYTHON_CMD && !process.env.PYTHON && process.platform !== "win32") {
-        reject(new Error(
-          "Python runtime not found. Set PYTHON_CMD to the installed Python binary " +
-          "(for example python, python3, or /app/.heroku/python/bin/python) in Railway."
-        ));
+
+    const candidates = pickPythonCommand();
+    let index = 0;
+
+    const tryNext = (lastError) => {
+      if (index >= candidates.length) {
+        reject(lastError || new Error("Python runtime not found."));
         return;
       }
-      reject(err);
-    });
-    proc.stdin.write(command);
-    proc.stdin.end();
+
+      const pythonCmd = candidates[index++];
+      const proc = spawn(pythonCmd, [DB_SCRIPT]);
+      let stdout = "";
+      let stderr = "";
+      let spawned = false;
+
+      proc.stdout.on("data", (c) => (stdout += c));
+      proc.stderr.on("data", (c) => (stderr += c));
+      proc.on("spawn", () => {
+        spawned = true;
+        proc.stdin.write(command);
+        proc.stdin.end();
+      });
+      proc.on("close", () => {
+        if (stderr) console.error(`[DB] Python stderr: ${stderr.trim()}`);
+        try {
+          resolve(JSON.parse(stdout));
+        } catch {
+          reject(new Error(`DB parse error. stdout:"${stdout}" stderr:"${stderr}"`));
+        }
+      });
+      proc.on("error", (err) => {
+        if (!spawned && err.code === "ENOENT") {
+          tryNext(err);
+          return;
+        }
+        reject(err);
+      });
+    };
+
+    tryNext();
   });
 }
 

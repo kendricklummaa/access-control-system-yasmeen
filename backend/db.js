@@ -6,10 +6,22 @@ const { spawn } = require("child_process");
 const path = require("path");
 const DB_SCRIPT = path.join(__dirname, "python", "db_manager.py");
 
+function pickPythonCommand() {
+  if (process.env.PYTHON_CMD) {
+    return process.env.PYTHON_CMD;
+  }
+
+  if (process.platform === "win32") {
+    return "py";
+  }
+
+  return process.env.PYTHON || "python3";
+}
+
 function runDB(action, payload = {}) {
   return new Promise((resolve, reject) => {
     const command = JSON.stringify({ action, ...payload });
-    const pythonCmd = process.platform === "win32" ? "py" : "python3";
+    const pythonCmd = pickPythonCommand();
     const proc = spawn(pythonCmd, [DB_SCRIPT]);
     let stdout = "", stderr = "";
     proc.stdout.on("data", (c) => (stdout += c));
@@ -19,7 +31,16 @@ function runDB(action, payload = {}) {
       try { resolve(JSON.parse(stdout)); }
       catch { reject(new Error(`DB parse error. stdout:"${stdout}" stderr:"${stderr}"`)); }
     });
-    proc.on("error", reject);
+    proc.on("error", (err) => {
+      if (err.code === "ENOENT" && !process.env.PYTHON_CMD && !process.env.PYTHON && process.platform !== "win32") {
+        reject(new Error(
+          "Python runtime not found. Set PYTHON_CMD to the installed Python binary " +
+          "(for example python, python3, or /app/.heroku/python/bin/python) in Railway."
+        ));
+        return;
+      }
+      reject(err);
+    });
     proc.stdin.write(command);
     proc.stdin.end();
   });
